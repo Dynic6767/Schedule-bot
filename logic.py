@@ -47,20 +47,18 @@ def get_subjects_for_class(class_number):
     return subjects
 
 def fill_database():
-    quarters = [1, 2, 3, 4]  # Теперь четверти идут по порядку
-    days_of_week = [1, 2, 3, 4, 5]  # Пн-Пт
+    quarters = [1, 2, 3, 4] 
+    days_of_week = [1, 2, 3, 4, 5]  
 
     for class_num in range(1, 12):
         subjects = get_subjects_for_class(class_num)
         max_lessons = get_lessons_count(class_num)
 
         for quarter in quarters:
-            # Уменьшаем количество уроков в 4-й четверти
             lessons_in_day = max_lessons - 1 if quarter == 4 else max_lessons
 
             for day in days_of_week:
                 for lesson_num in range(1, lessons_in_day + 1):
-                    # Выбираем предмет по кругу
                     subject = subjects[(lesson_num - 1) % len(subjects)]
                     
                     cursor.execute('''
@@ -69,7 +67,5 @@ def fill_database():
                     ''', (class_num, quarter, day, lesson_num, subject))
 
     conn.commit()
-    print("База данных успешно заполнена!")
 
-fill_database()
 
